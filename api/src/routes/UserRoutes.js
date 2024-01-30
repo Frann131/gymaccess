@@ -40,7 +40,7 @@ router.get("/:id", async (req, res, next) => {
   });
 
 router.post("/", async (req, res, next) => {
-  const { name, email, adress, phone, tributaryKey } = req.body;
+  const { name, mail, adress, phone } = req.body;
   try {
     const newUser = {
       name: name.toUpperCase(),
@@ -59,21 +59,36 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   const { id, name, dni, phone, adress, mail } = req.body;
-  const User = await User.findByPk(id);
-  if (!User) {
-    res.status(404).json({ message: "No existe ese Usere." });
+  const user = await User.findByPk(id);
+  if (!user) {
+    res.status(404).json({ message: "No existe ese Usuario." });
   } else {
     try {
-      name && (User.name = name.toUpperCase());
-      dni && (User.dni = dni)
-      phone && (User.phone = phone);
-      adress && (User.adress = adress.toUpperCase());
-      mail && (User.mail = mail);
-      await User.save();
-      res.status(200).json({ User, status: "Actualizado correctamente" });
+      name && (user.name = name.toUpperCase());
+      dni && (user.dni = dni)
+      phone && (user.phone = phone);
+      adress && (user.adress = adress.toUpperCase());
+      mail && (user.mail = mail);
+      await user.save();
+      res.status(200).json({ user, status: "Actualizado correctamente" });
     } catch (error) {
-      res.status(error.statusCode).json(error.message);
+      res.status(error.status).json(error.message);
     }
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByPk(id);
+    if (!user) {
+      res.status(404).json("Usuario no encontrado");
+    } else {
+      await product.destroy();
+      res.status(200).json("Usuario eliminado correctamente");
+    }
+  } catch (error) {
+    res.status(error.status).json("No se pudo eliminar el producto");
   }
 });
 
