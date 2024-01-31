@@ -19,3 +19,4 @@ const CrearUserForm = () => {
     </div>
   );
 };
+export default CrearUserForm;

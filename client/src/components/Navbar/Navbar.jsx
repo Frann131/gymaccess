@@ -1,4 +1,5 @@
 import s from "./Navbar.module.css";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Navbar = () => {
   return (
@@ -6,7 +7,9 @@ const Navbar = () => {
       <div className={s.navContainer}>
         <button class="btn btn-info m-2">Ingresos</button>
         <button class="btn btn-info m-2">Usuarios</button>
-        <button class="btn btn-info m-2">Crear usuario</button>
+        <button class="btn btn-info m-2">
+          <Link to="/crear">Crear usuario</Link>
+        </button>
       </div>
     </nav>
   );
