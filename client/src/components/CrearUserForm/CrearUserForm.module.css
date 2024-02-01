@@ -1,0 +1,26 @@
+.form {
+    display: flex;
+    justify-content: center;
+}
+.form input[type="text"], [type="number"]  {
+    width: 25rem;
+}
+.form div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.form fieldset {
+    border: 2px solid rgb(94, 104, 114);
+    border-radius: 20px;
+    text-align: left;
+    padding: 1rem;
+    flex-direction: column;
+}
+.form fieldset span{
+    margin: 0.1em;
+
+}
+.form fieldset input[type="radio"]{
+    margin-right: 0.3em;
+}
