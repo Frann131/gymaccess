@@ -1,22 +1,24 @@
 const { Router } = require("express");
-const { User, Accesses } = require("../db.js");
+const { User, Access } = require("../db.js");
 
 const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const Users = await User.findAll({
-      include: [
-        {
-          model: Accesses,
-          as: "Accessos",
-        },
-      ],
-    });
+    const Users = await User.findAll(
+    //   {
+    //   include: [
+    //     {
+    //       model: Accesses,
+    //       as: "Accessos",
+    //     },
+    //   ],
+    // }
+    );
     res.status(200).json(Users);
   } catch (error) {
     console.log(error);
-    res.status(error.status).json(error.message);
+    res.json(error.message);
   }
 });
 
@@ -27,8 +29,7 @@ router.get("/:id", async (req, res, next) => {
         where: { id: id },
         include: [
           {
-            model: Accesses,
-            as: "Accessos",
+            model: Access,
           },
         ],
       });
@@ -40,7 +41,7 @@ router.get("/:id", async (req, res, next) => {
   });
 
 router.post("/", async (req, res, next) => {
-  const { name, mail, adress, phone } = req.body;
+  const { name, mail, dni, adress, phone } = req.body;
   try {
     const newUser = {
       name: name.toUpperCase(),
@@ -58,7 +59,8 @@ router.post("/", async (req, res, next) => {
 });
 
 router.put("/:id", async (req, res, next) => {
-  const { id, name, dni, phone, adress, mail } = req.body;
+  const { id } = req.params
+  const { name, dni, phone, adress, mail } = req.body;
   const user = await User.findByPk(id);
   if (!user) {
     res.status(404).json({ message: "No existe ese Usuario." });
@@ -84,7 +86,7 @@ router.delete("/:id", async (req, res) => {
     if (!user) {
       res.status(404).json("Usuario no encontrado");
     } else {
-      await product.destroy();
+      await user.destroy();
       res.status(200).json("Usuario eliminado correctamente");
     }
   } catch (error) {

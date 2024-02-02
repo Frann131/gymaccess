@@ -9,13 +9,10 @@ module.exports = (sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      time: {
-        type: DataTypes.DATE,
-      },
     },
     {
-      timestamps: false,
-    //   tableName: "Accesses",
+      timestamps: true,
+      //   tableName: "Accesses",
     }
   );
 };

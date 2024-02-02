@@ -9,8 +9,7 @@ router.get("/", async (req, res, next) => {
       include: [
         {
           model: User,
-          as: "Usuario",
-          attributes: ['name'],
+          attributes: ["name"],
         },
       ],
     });
@@ -22,16 +21,36 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { date } = req.body;
+  const { userId } = req.body;
   try {
-    const newAccess = {
-      date: date,
-    };
-    await Access.create(newAccess);
-    res.status(200).send(`${newAccess}`);
+    const user = await User.findByPk(userId);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+
+    const newAccess = await Access.create();
+    await user.addAccess(newAccess);
+
+    res.status(200).json({fecha: newAccess.createdAt, usuario: user.name});
   } catch (error) {
     console.log(error.message);
     res.status(400).json({ message: error.message });
   }
 });
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const access = await Access.findByPk(id);
+    if (!access) {
+      res.status(404).json("Usuario no encontrado");
+    } else {
+      await access.destroy();
+      res.status(200).json("Usuario eliminado correctamente");
+    }
+  } catch (error) {
+    res.status(error.status).json("No se pudo eliminar el producto");
+  }
+});
+
 module.exports = router;
