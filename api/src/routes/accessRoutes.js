@@ -43,13 +43,13 @@ router.delete("/:id", async (req, res) => {
   try {
     const access = await Access.findByPk(id);
     if (!access) {
-      res.status(404).json("Usuario no encontrado");
+      res.status(404).json("Acceso no encontrado");
     } else {
       await access.destroy();
-      res.status(200).json("Usuario eliminado correctamente");
+      res.status(200).json("Acceso eliminado correctamente");
     }
   } catch (error) {
-    res.status(error.status).json("No se pudo eliminar el producto");
+    res.status(error.status).json("No se pudo eliminar el Acceso");
   }
 });
 
